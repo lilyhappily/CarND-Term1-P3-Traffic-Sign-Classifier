@@ -75,6 +75,7 @@ transforms.RandomApply([
 Here is example after augmenting of labeled 0 image  with some random parameters. Every epoch iteration, the result will be different. Here is an example of an original image and augmented images:
 
 <div align=center><img src="./README.assets/augmentation.png" width = "700" height = "135" alt="augmentation.png" align=center /></div>
+
 #### 2. Resampling 
 
 For dealing with imbalanced dataset, a widely adopted technique is called resampling including `under samplimg`  and `upper sampling` to sample more data from original dataset. Because I used [**Pytorch** ](https://pytorch.org/tutorials/)to build my model, `WeightedRandomSampler` is used to resample the dataset to solve the unbalanced problem. The technique will randomly sample more data according to the weight that is defined as the count of every class. The count is more smaller, the weight is more larger, and will sample more data. The size of training dataset after data resampling is up to  **86000**, and the detailed codes as follows:
@@ -99,6 +100,7 @@ I converted the images to grayscales because some images are so dim and only con
 The image comes into `transforms.Grayscale()`  converting the image to grayscale with single channel. Then I used `transforms.Totensor()`  to convert a PIL Image or `numpy.ndarray` (H x W x C) in the range [0, 255] to a `torch.FloatTensor` of shape (C x H x W) in the range [0.0, 1.0]. Lastly, the image goes through `transforms.Normalize(mean=(0.5, ),std=(1, ))])`  to get mean zero and unit variance. All of these are in `dataset.py` lines 52 -80. 
 
 <div align=center><img src="./README.assets/grayscale.png" width = "600" height = "140" alt="grayscale.png" align=center /></div>
+
 #### 4. Compose 
 
 All of above steps are chained together using [`Compose`](https://pytorch.org/docs/stable/torchvision/transforms.html?highlight=grayscale#torchvision.transforms.Compose). And then, the composed transform is assigned as the parameter transform of `class TrafficSignDataset()` in dataset.py. Lastly , I make use of  [`torch.utils.data.DataLoader()`](https://pytorch.org/docs/stable/data.html?highlight=dataloader#torch.utils.data.DataLoaderCombines)  to combine a dataset and a sampler, and provides an iteration over the given dataset.
